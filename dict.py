@@ -1,52 +1,74 @@
+import os
+import time
+
+
 menus = {
-    "Chicken": 4500.00,
-    "Spaghetti": 7500.00,
-    "Burger": 8000.00,
-    "Fries": 4000.00
+    "Chicken": 45.00,
+    "Fries": 25.00,
+    "Spaghetti": 50.00,
+    "Burger": 45.00
 }
 
 drinks = {
-    "Coke": 45.00,
-    "Royal": 45.00,
-    "Sprite": 45.00,
-    "MDew": 46.00
+    "Coke": 15.00,
+    "Royal": 15.00,
+    "Sprite": 15.00,
+    "Lemon Tea": 15.00,
 }
 
-cart_food = []
-cart_drink = []
-
-print("\n------- FOOD MENU -------")
-for key, value in menus.items():
-    print(f'{key:10}: {value:.2f}')
-print("------------------------------\n")
-
-print("\n------- DRINKS MENU -------")
-for key, value in drinks.items():
-    print(f'{key:10}: {value:.2f}')
-print("------------------------------\n")
+food_cart = []
+drink_cart = []
+food_quantity = []
+drink_quantity = []
+total = 0
 
 while True:
-    food = input("Pick an order: ").title()
-    drink = input("Choose a drink: ").title()
-    
-    if food in menus and drink in drinks:
-        cart_food.append(food)
-        cart_drink.append(drink)
-    else:
-        print("Invalid food or drink choice!")
-        continue  # skip the rest and retry
-    
-    order = input("Order again ( press 'enter' & 'e' exit ): ")
-    if order.lower() == 'e':
+    print('-------- FOOD MENU --------')
+    for key, value in menus.items():
+        print(f'{key:10}: {value:15.2f}')
+    print('---------------------------')
+
+    print('-------- DRINK MENU --------')
+    for key, value in drinks.items():
+        print(f'{key:10}: {value:15.2f}')
+    print('---------------------------')
+
+    try:
+        food = input('\nChoose food menu: ').title()
+        food_qty = int(input(f'How many {food}s would you like to order? '))
+        drink = input('\nChoose drink menu: ').title()
+        drink_qty = int(input(f'How many {drink}s would you like to order? '))
+
+        if food in menus and drink in drinks:
+            food_cart.append(food)
+            drink_cart.append(drink)
+            food_quantity.append(food_qty)
+            drink_quantity.append(drink_qty)
+        else:
+            print("Invalid menu or drink choice.")
+            time.sleep(2)
+            os.system('cls' if os.name == 'nt' else 'clear')
+            continue
+
+    except ValueError:
+        print("Please enter a valid number for quantity.")
+        time.sleep(2)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        continue
+
+    option = input('Do you want to order again (y/n): ')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    if option.lower() == 'n':
         break
 
+# Calculate total based on quantity
+food_total = sum(menus[food] * food_quantity[i] for i, food in enumerate(food_cart))
+drink_total = sum(drinks[drink] * drink_quantity[i] for i, drink in enumerate(drink_cart))
+total = food_total + drink_total
 
-total_food = sum(menus[food] for food in cart_food)
-total_drinks = sum(drinks[drink] for drink in cart_drink)
-total = total_food + total_drinks
+print("YOUR ORDER: ")
+for i in range(len(food_cart)):
+    print(f"\n {food_cart[i]} = {food_quantity[i]}  with  {drink_cart[i]} = {drink_quantity[i]} ")
 
-print("\nYour order:")
-for i in range(len(cart_food)):
-    print(f"{cart_food[i]} with {cart_drink[i]}")
-
-print(f"\nTotal amount: ${total:,.2f}")
+print(f'Total amount: ${total:,.2f}')

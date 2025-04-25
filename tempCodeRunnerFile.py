@@ -1,1 +1,1 @@
-(q to quit)
+prev_num = i
