@@ -1,1 +1,1 @@
-prev_num = i
+display_info
