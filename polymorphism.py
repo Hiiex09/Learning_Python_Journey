@@ -51,7 +51,6 @@ class Truck(Vehicle):
         self.capacity = capacity
 
     def display_info(self):
-       super().display_info()
        print(f'The {self.brand} has a capacity of {self.capacity}')
 
     def start_engine(self):
